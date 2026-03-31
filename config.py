@@ -1,13 +1,13 @@
 import os
 
 # --- Core Telegram Configs ---
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "6613265810:AAE02TlVelL0lLMpgxkv7cY4Br4Cq6IGDZs")
 API_ID = int(os.environ.get("API_ID", "16732227"))
 API_HASH = os.environ.get("API_HASH", "8b5594ad7ad37f3a0a7ddbfb3963bb51")
 
 # --- Restricted Bot Configs ---
 ADMINS = int(os.environ.get("ADMINS", "5868426717"))
-DB_URI = os.environ.get("DB_URI", "") 
+DB_URI = os.environ.get("DB_URI", "mongodb+srv://zuzoo:Movie12345@cluster0.y7xfsuh.mongodb.net") 
 DB_NAME = os.environ.get("DB_NAME", "vjsavecontentbot")
 ERROR_MESSAGE = bool(os.environ.get('ERROR_MESSAGE', True))
 
