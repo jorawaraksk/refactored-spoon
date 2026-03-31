@@ -1,20 +1,27 @@
 FROM python:3.10.8-slim-bullseye
 
+# Set the working directory inside the container
 WORKDIR /app
 
-#Install system dependencies required for video compression and stats
+# Install system dependencies
+# Added 'gcc' and 'build-essential' to ensure TgCrypto and psutil build successfully
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git wget pv jq python3-dev ffmpeg mediainfo neofetch \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    git wget pv jq python3-dev gcc build-essential ffmpeg mediainfo neofetch \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
+# Copy the requirements file first to leverage Docker cache
 COPY requirements.txt requirements.txt
-RUN pip3 install --no-cache-dir -r requirements.txt
 
+# Install Python dependencies
+RUN pip3 install --no-cache-dir --upgrade pip \
+    && pip3 install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the bot's source code
 COPY . .
 
-#Expose port for the web server
+# Expose the default port for Render/Koyeb
 EXPOSE 10000
 
-#Run the Flask server and the Pyrogram bot simultaneously
-#Render and Koyeb will bind to the PORT environment variable dynamically
-CMD gunicorn app:app --bind 0.0.0.0:${PORT:-10000} & python3 bot.py
+# Use bash -c to ensure the background operator (&) and environment variables are properly evaluated
+CMD ["bash", "-c", "gunicorn app:app --bind 0.0.0.0:${PORT:-10000} & python3 bot.py"]
