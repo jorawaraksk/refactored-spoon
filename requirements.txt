@@ -7,5 +7,6 @@ setuptools
 psutil
 html_telegraph_poster
 lxml_html_clean
+lxml[html_clean]
 speedtest-cli
 aiohttp
